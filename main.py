@@ -11,6 +11,6 @@ if __name__ == "__main__":
     trainer = Trainer(args, accelerator)
     trainer.fit()
     
-    os.makedir('./results', exist_ok=True)
+    os.makedirs('./results', exist_ok=True)
     with open(f'./results/{args.timestamp}.pkl', 'wb') as f:
         pickle.dump(trainer.result, f)
