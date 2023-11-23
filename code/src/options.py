@@ -22,7 +22,6 @@ def args_parser():
     parser.add_argument('--bs', type=int, default=64, help="batch size") # per device batch size
     parser.add_argument('--lr', type=float, default=0.01, help="learning rate")
     parser.add_argument('--optim', help="optimizer")
-    parser.add_argument('--device', default='0', help='set specific GPU number of CPU')
     parser.add_argument('--seed', type=int, default=42, help='random seed')
     parser.add_argument('--wandb', type=str_to_bool, default=False, help='wandb')
     parser.add_argument('--wandb_project_name', default="AI-Framework", help='wandb project name')
