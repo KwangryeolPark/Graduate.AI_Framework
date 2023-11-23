@@ -1,21 +1,24 @@
 import pickle
 import wandb
+import os
 
 from src.utils import set_seed
 from src.options import args_parser
 from src.trainer import Trainer
 
 
-if __name == "__main__":
-    set_seed(args.seed)
-    
+if __name__ == "__main__":
     args = args_parser()
+
+    set_seed(args.seed)
     if args.device != 'cpu':
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
         device = 'cuda'
     else:
         device = 'cpu'
+
+    print(device)
         
         
     if args.data.upper() == 'CIFAR10':
@@ -23,7 +26,7 @@ if __name == "__main__":
     elif args.data.upper() == 'CIFAR100':
         num_classes = 100
    
-   config = {
+    config = {
        'data': args.data,
        'num_classes': num_classes, 
        'model': args.model,
@@ -33,7 +36,8 @@ if __name == "__main__":
        'optim': args.optim,
        'multi_gpu': args.multi_gpu,
        'device': device,
-   }
+       'wandb': args.wandb
+    }
     if args.wandb == True:
         wandb.init(project = args.wandb_project_name, 
                    config = config, 

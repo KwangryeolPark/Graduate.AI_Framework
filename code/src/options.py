@@ -30,4 +30,5 @@ def args_parser():
     parser.add_argument('--wandb', type=str_to_bool, default=False, help='wandb')
     parser.add_argument('--wandb_project_name', default="AI-Framework", help='wandb project name')
 
-
+    args = parser.parse_args()
+    return args

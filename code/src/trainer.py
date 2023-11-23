@@ -6,8 +6,8 @@ import wandb
 
 from src.dataset import prepare_dataset
 
-from src.models.resnet import ResNet
-from src.models.efficientnet import EfficientNet
+from src.models import resnet
+from src.models import efficientnet
 
 class Trainer(object):
     
@@ -26,9 +26,9 @@ class Trainer(object):
         self.wandb = configure['wandb']
         
         if self.model_name.upper() == 'RESNET':
-            self.model = ResNet50(num_classes=num_classes)
+            self.model = resnet.ResNet50(num_classes=self.num_classes)
         elif self.model_name.upper() == 'EFFICIENTNET':
-            self.model = EfficientNetB0(num_classes=num_classes)
+            self.model = efficientnet.EfficientNetB0(num_classes=self.num_classes)
         self.model.to(self.device)
         
         self.criterion = nn.CrossEntropyLoss()
