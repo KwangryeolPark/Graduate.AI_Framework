@@ -3,7 +3,7 @@ import numpy as np
 import random
 from accelerate.utils import set_seed
 
-# control torch randomness (cudnn deterministic option make program slowly)
+# control torch randomness (cudnn deterministic option make program slow)
 def set_seed(random_seed=42):
 
     torch.manual_seed(random_seed)
