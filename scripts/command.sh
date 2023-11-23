@@ -27,4 +27,5 @@ MAIN_OPTIONS="
 accelerate launch \
     $GPU_OPTIONS \
     main.py \
-    $MAIN_OPTIONS
+    $MAIN_OPTIONS \
+    $@
