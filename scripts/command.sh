@@ -21,12 +21,10 @@ MAIN_OPTIONS="
     --lr 0.01 \
     --batch_size 64 \
     --epochs 20 \
-    --compile False \
     --gradient_accumulation_steps 1 \
 "
 
 accelerate launch \
-    --main_process_port $RANDOM_PORT \
     main.py \
     $MAIN_OPTIONS \
     $@
