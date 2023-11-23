@@ -1,3 +1,4 @@
 *.pyn
 
+__pycache__
 venv
