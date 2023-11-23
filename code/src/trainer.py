@@ -10,6 +10,8 @@ from src.models import resnet
 from src.models import efficientnet
 
 from accelerate import Accelerator
+# from transformers import TrainingArguments
+
 
 class Trainer(object):
     
@@ -19,7 +21,7 @@ class Trainer(object):
         self.model_name = configure['model']
         self.num_classes = configure['num_classes']
         self.epochs = configure['epochs']
-        self.bs = configure['bs']
+        self.bs = configure['bs'] # per device batch size
         self.lr = configure['lr']
         self.optim = configure['optim']
         self.multi_gpu = configure['multi_gpu']
@@ -43,9 +45,25 @@ class Trainer(object):
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=self.bs, shuffle=False)
         
         # accelerator options
-        self.grad_accum_step = configure['grad_accum']
-        self.accelerator = Accelerator(gradient_accumulation_steps=self.grad_accum_step)
+        self.grad_chk_pointing = configure['grad_chk_pointing']
+        self.grad_accum_step = configure['grad_accum_step']
+        self.mix_prec_fp16 = configure['mix_prec_fp16']
+        self.torch_compile = configure['torch_compile']
         
+        # if self.grad_chk_pointing:
+        #     self.model.gradient_checkpointing_enable()
+            
+        self.accelerator = Accelerator(
+            gradient_accumulation_steps=self.grad_accum_step,
+            # fp16=self.mix_prec_fp16,
+        )
+        # training arguments
+        # self.trainings_args = TrainingArguments(
+        #     per_devsice_train_batch_size=self.bs,
+        #     gradient_accumulation_steps=self.grad_accum_step,
+        #     fp16=self.mix_prec_fp16,
+        #     torch_compiled=self.torch_compile,
+        # )
         self.model, self.optimizer, self.trainloader, self.scheduler =\
             self.accelerator.prepare(self.model, self.optimizer, self.trainloader, self.scheduler)
     
@@ -72,7 +90,6 @@ class Trainer(object):
                 self.optimizer.step()
                 self.scheduler.step()
                 
-    
     def test(self):
         self.model.eval()
         loss = 0; correct = 0
