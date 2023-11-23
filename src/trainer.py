@@ -28,7 +28,7 @@ class Trainer(object):
         
         self.train_loader, self.test_loader = prepare_dataset(config)
         
-        if config.compile:
+        if config.compile == True:
             self.model = torch.compile(self.model)
             
         self.model, self.optimizer, self.train_loader, self.test_loader, self.scheduler = self.accelerator.prepare(

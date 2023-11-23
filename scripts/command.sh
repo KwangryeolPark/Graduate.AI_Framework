@@ -21,7 +21,7 @@ MAIN_OPTIONS="
     --lr 0.01 \
     --batch_size 64 \
     --epochs 20 \
-    --compile \
+    --compile False \
     --gradient_accumulation_steps 1 \
 "
 
