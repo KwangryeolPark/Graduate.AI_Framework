@@ -6,4 +6,5 @@ pip install \
     numpy==1.26.2 \
     matplotlib==3.8.2 \
     tqdm==4.66.1 \
-    pytorch-lightning==2.1.2
+    pytorch-lightning==2.1.2 \
+    accelerate==0.24.1

@@ -6,3 +6,6 @@ AI Framework Final Project.
 ```
 bash scripts/install.sh
 ```
+
+# Example codes
+* examples/check_kernel_time.py -> Kernel time and wall time check.
