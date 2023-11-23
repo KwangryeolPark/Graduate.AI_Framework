@@ -1,6 +1,7 @@
 import torch
 import numpy as np 
 import random
+from accelerate.utils import set_seed
 
 # control torch randomness (cudnn deterministic option make program slowly)
 def set_seed(random_seed=42):
@@ -15,3 +16,5 @@ def set_seed(random_seed=42):
 
     np.random.seed(random_seed)
     random.seed(random_seed)
+
+    set_seed(random_seed)
