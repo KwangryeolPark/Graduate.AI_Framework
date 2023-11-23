@@ -11,7 +11,7 @@ def args_parser():
     parser.add_argument('--model_name', type=str, required=True, help='model name', choices=['resnet', 'efficientnet'])
     parser.add_argument('--lr', type=float, default=0.01, help='learning rate')
     parser.add_argument('--batch_size', type=int, default=64, help='batch size, N x 16')
-    parser.add_argument('--torch_compile', type=bool, default=False, help='torch compile')
+    parser.add_argument('--compile', type=bool, default=False, help='torch compile')
     parser.add_argument('--epochs', type=int, default=20, help='epochs')
     parser.add_argument('--timestamp', type=str, default=str(timestamp), help='current time')    
 

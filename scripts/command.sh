@@ -7,25 +7,26 @@
 
 #/bin/bash
 
+RANDOM_PORT=$(shuf -i 1024-49151 -n 1)
+
 GPU_OPTIONS="
     --multi_gpu \
-    --num_gpus  2 \
+    --num_processes  2 \
     --gpu_ids   0,1
 "
 
 MAIN_OPTIONS="
-    --dataset   cifar10 \
-    --model_name    resnet  \
-    --lr    0.01    \
-    --batch_size    64  \
-    --torch_compile False    \
-    --epochs    5   \
-
+    --dataset cifar10 \
+    --model_name resnet \
+    --lr 0.01 \
+    --batch_size 64 \
+    --epochs 20 \
+    --compile \
     --gradient_accumulation_steps 1 \
 "
 
 accelerate launch \
-    $GPU_OPTIONS \
+    --main_process_port $RANDOM_PORT \
     main.py \
     $MAIN_OPTIONS \
     $@
