@@ -18,20 +18,21 @@ def args_parser():
     parser.add_argument('--data', help="name of dataset")
     
     parser.add_argument('--model', help="name of model") # Resnet50 or EfficientNet
-    parser.add_argument('--epochs', type=int, default=100, help="epochs")
-    parser.add_argument('--bs', type=int, default=100, help="batch size")
-    parser.add_argument('--lr', type=float, default=100, help="learning rate")
+    parser.add_argument('--epochs', type=int, default=10, help="epochs")
+    parser.add_argument('--bs', type=int, default=64, help="batch size") # per device batch size
+    parser.add_argument('--lr', type=float, default=0.01, help="learning rate")
     parser.add_argument('--optim', help="optimizer")
-    
-    # system setting
-    parser.add_argument('--multi_gpu', type=str_to_bool, default=False, help='use multi gpu or not') 
-    parser.add_argument('--device', default='cuda', help='set specific GPU number of CPU')
+    parser.add_argument('--device', default='0', help='set specific GPU number of CPU')
     parser.add_argument('--seed', type=int, default=42, help='random seed')
     parser.add_argument('--wandb', type=str_to_bool, default=False, help='wandb')
     parser.add_argument('--wandb_project_name', default="AI-Framework", help='wandb project name')
     
     # acclerator options
-    parser.add_argument('--grad_accum', type=int, default=None, help='Gradient accumulation')
+    # parser.add_argument('--per_dev_bs', type=int, help='per device batch size') # -> bs
+    parser.add_argument('--grad_accum_step', type=int, default=None, help='Gradient accumulation') 
+    parser.add_argument('--grad_chk_pointing', type=str_to_bool, default=False, help='whether to use gradient checkpointing') 
+    parser.add_argument('--mix_prec_fp16', type=str_to_bool, default=False, help='whether to use mixed precision training') 
+    parser.add_argument('--torch_compile', type=str_to_bool, default=False, help='whether to use torch compile') 
 
     args = parser.parse_args()
     return args
