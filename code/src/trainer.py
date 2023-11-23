@@ -1,13 +1,15 @@
 import torch
 import torch.nn as nn
-import numpy as np
 import torchvision
+import numpy as np
 import wandb
+from tqdm import tqdm 
 
 from src.dataset import prepare_dataset
-
 from src.models import resnet
 from src.models import efficientnet
+
+from accelerate import Accelerator
 
 class Trainer(object):
     
@@ -33,11 +35,19 @@ class Trainer(object):
         
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr)
+        self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=200)
         
         # prepare dataset
         self.trainset, self.testset = prepare_dataset(configure)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.bs, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=self.bs, shuffle=False)
+        
+        # accelerator options
+        self.grad_accum_step = configure['grad_accum']
+        self.accelerator = Accelerator(gradient_accumulation_steps=self.grad_accum_step)
+        
+        self.model, self.optimizer, self.trainloader, self.scheduler =\
+            self.accelerator.prepare(self.model, self.optimizer, self.trainloader, self.scheduler)
     
     def train(self):
         self.model.train()
@@ -48,6 +58,20 @@ class Trainer(object):
             loss = self.criterion(outputs, labels)
             loss.backward()
             self.optimizer.step()
+            
+    def train_with_accelerator(self):
+        self.model.train()
+        for idx, (data, labels) in enumerate(self.trainloader):
+            with self.accelerator.accumulate(self.model):
+                self.optimizer.zero_grad()
+                
+                outputs = self.model(data)
+                loss = self.criterion(outputs, labels)
+                self.accelerator.backward(loss)
+            
+                self.optimizer.step()
+                self.scheduler.step()
+                
     
     def test(self):
         self.model.eval()
@@ -66,8 +90,9 @@ class Trainer(object):
     
     def fit(self):
         self.result = {'loss': [], 'accuracy': []}
-        for epoch in range(self.epochs):
-            self.train()
+        for epoch in tqdm(range(self.epochs)):
+            # self.train()
+            self.train_with_accelerator()
             loss, acc = self.test()
             self.result['loss'].append(loss)
             self.result['accuracy'].append(acc)

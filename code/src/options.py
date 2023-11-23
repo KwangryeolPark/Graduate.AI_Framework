@@ -29,6 +29,9 @@ def args_parser():
     parser.add_argument('--seed', type=int, default=42, help='random seed')
     parser.add_argument('--wandb', type=str_to_bool, default=False, help='wandb')
     parser.add_argument('--wandb_project_name', default="AI-Framework", help='wandb project name')
+    
+    # acclerator options
+    parser.add_argument('--grad_accum', type=int, default=None, help='Gradient accumulation')
 
     args = parser.parse_args()
     return args
