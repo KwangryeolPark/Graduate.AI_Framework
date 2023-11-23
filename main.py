@@ -1,3 +1,4 @@
+import os
 import pickle
 from src.accelerator import get_accelerator
 from src.trainer import Trainer
@@ -10,5 +11,6 @@ if __name__ == "__main__":
     trainer = Trainer(args, accelerator)
     trainer.fit()
     
+    os.makedir('./results', exist_ok=True)
     with open(f'./results/{args.timestamp}.pkl', 'wb') as f:
         pickle.dump(trainer.result, f)
