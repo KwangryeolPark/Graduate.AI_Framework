@@ -16,10 +16,7 @@ if __name__ == "__main__":
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
         device = 'cuda'
     else:
-        device = 'cpu'
-
-    print(device)
-        
+        device = 'cpu'     
         
     if args.data.upper() == 'CIFAR10':
         num_classes = 10
@@ -36,8 +33,15 @@ if __name__ == "__main__":
        'optim': args.optim,
        'multi_gpu': args.multi_gpu,
        'device': device,
-       'wandb': args.wandb
+       'wandb': args.wandb,
+       
+       # accelerator options
+       'grad_chk_pointing': args.grad_chk_pointing,
+       'grad_accum_step': args.grad_accum_step,
+       'mix_prec_fp16': args.mix_prec_fp16,
+       'torch_compile': args.torch_compile,
     }
+    
     if args.wandb == True:
         wandb.init(project = args.wandb_project_name, 
                    config = config, 
