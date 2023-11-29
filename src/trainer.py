@@ -28,7 +28,7 @@ class Trainer(object):
         elif self.config.optimizer == 'sgdm':
             self.optimizer = optim.SGD(self.model.parameters(), lr=config.lr, momentum=0.9)
         elif self.config.optimizer == 'adam':
-            self.optimizer = optim.Adam(self.parameters(), lr=config.lr)
+            self.optimizer = optim.Adam(self.model.parameters(), lr=config.lr)
         self.scheduler = scheduler.CosineAnnealingLR(self.optimizer, T_max=200)
         
         self.train_loader, self.test_loader = prepare_dataset(config)
