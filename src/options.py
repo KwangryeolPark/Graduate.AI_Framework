@@ -14,12 +14,19 @@ def args_parser():
     parser.add_argument('--compile', type=bool, default=False, help='torch compile')
     parser.add_argument('--epochs', type=int, default=20, help='epochs')
     parser.add_argument('--timestamp', type=str, default=str(timestamp), help='current time')    
-
+    parser.add_argument('--pin_memory', type=bool, default=False)
+    parser.add_argument('--num_workers', type=int, default=1)
+    parser.add_argument('--optimizer', type=str, default='sgd', choices=['sgd', 'adam', 'sgdm'])
+    
     #   Accelerate    
     parser.add_argument('--gradient_accumulation_steps', type=int, default=1, help='gradient accumulation steps')
     parser.add_argument('--seed', type=int, default=42, help='random seed')
+    parser.add_argument('--mixed_precision', default=None)
+    parser.add_argument('--use_deepspeed', action="store_true")
+    parser.add_argument('--gpu_ids', default=None)
+    
 
     #   Wandb
-    parser.add_argument('--wandb_project_name', type=str, default='AI Framework Project', help='wandb project name')
+    parser.add_argument('--wandb_project_name', type=str, default='Neo AI Framework Project', help='wandb project name')
     parser.add_argument('--wandb_name', type=str, default=str(timestamp), help='wandb name')
     return parser.parse_args()
