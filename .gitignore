@@ -1,5 +1,4 @@
 *.pyn
-*.pkl
 
 __pycache__
 venv
