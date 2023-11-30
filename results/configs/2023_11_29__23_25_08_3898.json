@@ -1,0 +1,19 @@
+{
+    "dataset": "cifar10",
+    "model_name": "resnet",
+    "lr": 0.01,
+    "batch_size": 128,
+    "compile": false,
+    "epochs": 20,
+    "timestamp": "2023_11_29__23_25_08",
+    "pin_memory": true,
+    "num_workers": 8,
+    "optimizer": "sgd",
+    "gradient_accumulation_steps": 2,
+    "seed": 3,
+    "mixed_precision": "no",
+    "use_deepspeed": false,
+    "gpu_ids": "3",
+    "wandb_project_name": "Neo AI Framework Project",
+    "wandb_name": "2023_11_29__23_25_08"
+}
